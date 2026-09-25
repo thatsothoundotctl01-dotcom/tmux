@@ -1,66 +1,101 @@
-# tmux
+# Tmux Plugin Manager
 
-A clean, keyboard-first tmux setup with Catppuccin styling, persistent sessions, and TPM plugin management.
+[![Build Status](https://travis-ci.org/tmux-plugins/tpm.svg?branch=master)](https://travis-ci.org/tmux-plugins/tpm)
 
-## Features
+Installs and loads `tmux` plugins.
 
-- `Ctrl-a` prefix with Vim-style pane navigation
-- Mouse support and vi copy mode
-- Catppuccin Mocha status bar
-- Session persistence with tmux-resurrect and tmux-continuum
-- Clipboard integration with tmux-yank
-- Vim and tmux navigation with vim-tmux-navigator
+Tested and working on Linux, OSX, and Cygwin.
 
-## Install
+See list of plugins [here](https://github.com/tmux-plugins/list).
 
-### 1. Install TPM
+Also, check out [tpack](https://github.com/tmuxpack/tpack), drop-in replacement
+for `tpm` with a TUI, auto-updates and plugins browser.
+
+### Installation
+
+Requirements: `tmux` version 1.9 (or higher), `git`, `bash`.
+
+Clone TPM:
 
 ```bash
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
-### 2. Install the configuration
-
-From the repository root:
-
-```bash
-mkdir -p ~/.tmux
-cp tmuxs/~/.tmux.conf ~/.tmux.conf
-```
-
-Start tmux:
+Put this at the bottom of `~/.tmux.conf` (`$XDG_CONFIG_HOME/tmux/tmux.conf`
+works too):
 
 ```bash
-tmux
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+
+# Other examples:
+# set -g @plugin 'github_username/plugin_name'
+# set -g @plugin 'github_username/plugin_name#branch'
+# set -g @plugin 'git@github.com:user/plugin'
+# set -g @plugin 'git@bitbucket.com:user/plugin'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
 ```
 
-Inside tmux, press `Ctrl-a` then `I` to install the configured plugins.
-
-## Usage
-
-| Key | Action |
-| --- | --- |
-| `Ctrl-a` | Prefix key |
-| `Ctrl-a` `c` | New window in the current directory |
-| `Ctrl-a` `|` | Split pane horizontally |
-| `Ctrl-a` `-` | Split pane vertically |
-| `Ctrl-a` `h` `j` `k` `l` | Move between panes |
-| `Ctrl-a` `H` `J` `K` `L` | Resize the active pane |
-| `Ctrl-a` `r` | Reload the configuration |
-| `Ctrl-a` `[` | Enter vi copy mode |
-
-## Updating
-
-Update plugins from inside tmux with `Ctrl-a` then `U`.
-
-The configuration is stored in [`tmuxs/~/.tmux.conf`](tmuxs/~/.tmux.conf). After editing it, reload tmux with:
+Reload TMUX environment so TPM is sourced:
 
 ```bash
-tmux source-file ~/.tmux.conf
+# type this in terminal if tmux is already running
+tmux source ~/.tmux.conf
 ```
 
-## Requirements
+That's it!
 
-- tmux 3.2 or newer
-- Git
-- A terminal with true-color support
+### Installing plugins
+
+1. Add new plugin to `~/.tmux.conf` with `set -g @plugin '...'`
+2. Press `prefix` + <kbd>I</kbd> (capital i, as in **I**nstall) to fetch the plugin.
+
+You're good to go! The plugin was cloned to `~/.tmux/plugins/` dir and sourced.
+
+### Uninstalling plugins
+
+1. Remove (or comment out) plugin from the list.
+2. Press `prefix` + <kbd>alt</kbd> + <kbd>u</kbd> (lowercase u as in **u**ninstall) to remove the plugin.
+
+All the plugins are installed to `~/.tmux/plugins/` so alternatively you can
+find plugin directory there and remove it.
+
+### Key bindings
+
+`prefix` + <kbd>I</kbd>
+- Installs new plugins from GitHub or any other git repository
+- Refreshes TMUX environment
+
+`prefix` + <kbd>U</kbd>
+- updates plugin(s)
+
+`prefix` + <kbd>alt</kbd> + <kbd>u</kbd>
+- remove/uninstall plugins not on the plugin list
+
+### Docs
+
+- [Help, tpm not working](docs/tpm_not_working.md) - problem solutions
+
+More advanced features and instructions, regular users probably do not need
+this:
+
+- [How to create a plugin](docs/how_to_create_plugin.md). It's easy.
+- [Managing plugins via the command line](docs/managing_plugins_via_cmd_line.md)
+- [Changing plugins install dir](docs/changing_plugins_install_dir.md)
+- [Automatic TPM installation on a new machine](docs/automatic_tpm_installation.md)
+
+### Tests
+
+Tests for this project run on [Travis CI](https://travis-ci.org/tmux-plugins/tpm).
+
+When run locally, [vagrant](https://www.vagrantup.com/) is required.
+Run tests with:
+
+```bash
+# within project directory
+./run_tests
+```
+
